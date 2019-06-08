@@ -1,0 +1,24 @@
+{
+  "name": "mean-stack-sample",
+  "version": "1.0.0",
+  "description": "sample walkthrough app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Roni",
+  "license": "ISC",
+  "dependencies": {
+    "angular": "^1.7.8",
+    "angular-resource": "^1.7.8",
+    "angular-route": "^1.7.8",
+    "body-parser": "^1.19.0",
+    "bootstrap-css-only": "^4.3.1",
+    "express": "^4.17.1",
+    "jade": "^1.11.0",
+    "jquery": "^3.4.1",
+    "morgan": "^1.9.1",
+    "stylus": "^0.54.5",
+    "toastr": "^2.1.4"
+  }
+}
