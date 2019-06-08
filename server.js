@@ -25,6 +25,10 @@ app.use(bodyParser.json());
 // Tell app where to look for the relevant files
 app.use(express.static(__dirname + '/public'))
 
+app.get('/partials/:partialPath', function(req, res){
+    res.render('partials/' + req.params.partialPath)
+})
+
 app.get('*', function(req, res) {
     res.render('index');
 })
