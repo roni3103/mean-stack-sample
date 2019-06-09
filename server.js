@@ -30,7 +30,7 @@ app.use(express.static(__dirname + '/public'))
 if(env == "development"){
     mongoose.connect('mongodb://localhost/multivision');
 }else {
-    mongoose.connect(config.dbUrl)
+    mongoose.connect('mongodb://roni:multivision1@ds135427.mlab.com:35427/multivision')
 }
 
 var db = mongoose.connection;
