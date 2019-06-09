@@ -3,6 +3,7 @@ var stylus = require('stylus');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var config = require('./config');
 
 var env = process.env.NODE_ENV || 'development';
 
@@ -26,7 +27,12 @@ app.use(bodyParser.json());
 // Tell app where to look for the relevant files
 app.use(express.static(__dirname + '/public'))
 
-mongoose.connect('mongodb://localhost/multivision');
+if(env == "development"){
+    mongoose.connect('mongodb://localhost/multivision');
+}else {
+    mongoose.connect(config.dbUrl)
+}
+
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error...'));
 db.once('open', function callback() {
