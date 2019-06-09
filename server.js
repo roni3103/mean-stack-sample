@@ -3,7 +3,7 @@ var stylus = require('stylus');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-var config = require('./config');
+// var config = require('./config');
 
 var env = process.env.NODE_ENV || 'development';
 
