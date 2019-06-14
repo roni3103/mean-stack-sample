@@ -31,7 +31,11 @@ if(env == "development"){
     mongoose.connect('mongodb://localhost/multivision');
 }else {
     // mongoose.connect('mongodb://roni:multivision1@ds135427.mlab.com:35427/multivision')
+<<<<<<< HEAD
     // mongoose.connect('mongodb://theUser:training1@ds251179.mlab.com:51179/magickeeper');
+=======
+    // mongoose.connect('mongodb://theUser:training1@ds251179.mlab.com:51179/magickeeper')
+>>>>>>> 186f078500784a55ad0c1f707e24475565aff57a
     mongoose.connect('mongodb://theUser:training1@ds235417.mlab.com:35417/magiccards')
 }
 
@@ -40,7 +44,7 @@ db.on('error', console.error.bind(console, 'connection error...'));
 db.once('open', function callback() {
   console.log('multivision db opened');
 });
-
+console.log('the db is ', db)
 // COMMENTED OUT THE MESSAGE COLLECTION STUFF AS NOT USING AT THE MINUTE
 var cardSchema = mongoose.Schema({Name: String, Collection: String, message: String});
 var Card = mongoose.model('Card', cardSchema);
