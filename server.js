@@ -30,7 +30,9 @@ app.use(express.static(__dirname + '/public'))
 if(env == "development"){
     mongoose.connect('mongodb://localhost/multivision');
 }else {
-    mongoose.connect('mongodb://roni:multivision1@ds135427.mlab.com:35427/multivision')
+    // mongoose.connect('mongodb://roni:multivision1@ds135427.mlab.com:35427/multivision')
+    // mongoose.connect('mongodb://theUser:training1@ds251179.mlab.com:51179/magickeeper');
+    mongoose.connect('mongodb://theUser:training1@ds235417.mlab.com:35417/magiccards')
 }
 
 var db = mongoose.connection;
@@ -40,11 +42,21 @@ db.once('open', function callback() {
 });
 
 // COMMENTED OUT THE MESSAGE COLLECTION STUFF AS NOT USING AT THE MINUTE
-var messageSchema = mongoose.Schema({message: String});
-var Message = mongoose.model('Message', messageSchema);
-var mongoMessage;
-Message.findOne().exec(function(err, messageDoc) {
-  mongoMessage = messageDoc.message;
+var cardSchema = mongoose.Schema({Name: String, Collection: String, message: String});
+var Card = mongoose.model('Card', cardSchema);
+var mongoMessage=[];
+Card.find().exec(function(err, messageDoc) {
+     console.log('results', messageDoc)
+//   mongoMessage = messageDoc.Name;
+  for(x in messageDoc){
+      console.log(x, messageDoc[x].message)
+    //   if(messageDoc[x].message){
+        mongoMessage.push(messageDoc[x].message)
+    //     console.log('the message is ', messageDoc[x].message)
+    //   }
+      console.log('mongomessage is ', mongoMessage)
+      
+  }
 });
 
 app.get('/partials/pictures', function(req, res){
