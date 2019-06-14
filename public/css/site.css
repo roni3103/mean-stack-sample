@@ -15,3 +15,7 @@ footer {
 footer p {
   border-top: 1px solid #d7e0e2;
 }
+.navbar-form
+  .form-group, button {
+    margin-left: 10px;
+  }
