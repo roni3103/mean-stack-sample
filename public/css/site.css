@@ -8,11 +8,11 @@ body {
 .navbar-header a.navbar-brand h6 {
   color: #ccc;
 }
-footer {
+efooter {
   padding-left: 15px;
   padding-right: 15px;
 }
-footer p {
+efooter p {
   border-top: 1px solid #d7e0e2;
 }
 .navbar-form .form-group {
@@ -20,4 +20,10 @@ footer p {
 }
 .navbar-form button {
   margin-left: 10px;
+}
+.toast-top-rght {
+  top: 70px;
+}
+.toast-success {
+  background-color: #800080;
 }
