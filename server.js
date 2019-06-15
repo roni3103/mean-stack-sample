@@ -1,43 +1,51 @@
-var express = require('express');
-var stylus = require('stylus');
-var logger = require('morgan');
-var bodyParser = require('body-parser');
-var mongoose = require('mongoose');
-// var config = require('./config');
+const express = require('express');
+
+const mongoose = require('mongoose');
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+
 
 var env = process.env.NODE_ENV || 'development';
 
+// we need to match our environments with those available in our config
+// anything else will just error
+
 var app = express();
 
-app.set('views', __dirname + '/server/views');
-app.set('view engine', 'jade');
+var config = require('./server/config/config')[env];
+require('./server/config/express')(app, config);
+require('./server/config/mongoose')(config);
 
-function compile(str, path) {
-    return stylus(str).set('filename', path);
-}
+var User = mongoose.model('User');
+passport.use(new LocalStrategy(
+    function(username, password, done){
+        User.findOne({username:username}).exec(function(err, user){
+            if(user){
+                return done(null, user)
+            } else {
+                return done(null, false)
+            }
+        })
+    }
+));
 
-app.use(stylus.middleware({
-    src: __dirname + '/public',
-    compile:compile
-}))
-
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(bodyParser.json());
-
-// Tell app where to look for the relevant files
-app.use(express.static(__dirname + '/public'))
-
-if(env == "development"){
-    mongoose.connect('mongodb://localhost/multivision');
-}else {
-    mongoose.connect('mongodb://roni:multivision1@ds135427.mlab.com:35427/multivision')
-}
-
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error...'));
-db.once('open', function callback() {
-  console.log('multivision db opened');
+passport.serializeUser(function(user, done){
+    if(user){
+        done(null, user._id);
+    }
 });
+
+passport.deserializeUser(function(id, done){
+    User.findOne({_id:id}).exec(function(err, user){
+        if(user){
+            return done(null, user)
+        } else {
+            return done(null, false)
+        }
+    })
+})
+
+require('./server/config/routes')(app);
 
 // COMMENTED OUT THE MESSAGE COLLECTION STUFF AS NOT USING AT THE MINUTE
 // var messageSchema = mongoose.Schema({message: String});
@@ -47,16 +55,7 @@ db.once('open', function callback() {
 //   mongoMessage = messageDoc.message;
 // });
 
-app.get('/partials/:partialPath', function(req, res){
-    res.render('partials/' + req.params.partialPath)
-})
 
-app.get('*', function(req, res) {
-    res.render('index', {
-        // mongoMessage: mongoMessage
-    });
-})
 
-const port=process.env.PORT || 3030;
-app.listen(port);
-console.log('App listening on port ', port)
+app.listen(config.port);
+console.log('App listening on port ', config.port)
