@@ -36,6 +36,13 @@ if(env == "development"){
 }
 
 var db = mongoose.connection;
+
+app.use(function (req, res, next) {
+    // pass db in request to all other handlers
+    req.db = db;
+
+    next();
+});
 db.on('error', console.error.bind(console, 'connection error...'));
 db.once('open', function callback() {
   console.log('multivision db opened');
@@ -46,7 +53,7 @@ var cardSchema = mongoose.Schema({Name: String, Collection: String, message: Str
 var Card = mongoose.model('Card', cardSchema);
 var mongoMessage=[];
 Card.find().exec(function(err, messageDoc) {
-     console.log('results', messageDoc)
+    //  console.log('results', messageDoc)
 //   mongoMessage = messageDoc.Name;
   for(x in messageDoc){
       console.log(x, messageDoc[x].message)
@@ -59,17 +66,35 @@ Card.find().exec(function(err, messageDoc) {
   }
 });
 
-app.get('/partials/pictures', function(req, res){
-    var MyCard = mongoose.model('Card', cardSchema);
-    MyCard.find({}).exec(function(err, foundCards){
-        console.log('cards are', foundCards)
-        res.render('partials/pictures', {myCards: foundCards})
-        // var myCards = foundCards;
-        // console.log('cards in get method', myCards);
+app.get('/cards', function(req, res, next){
+    console.log('did the db come', db)
+    // res.send("sausages")
+    var MyCard = mongoose.model('Card', cardSchema)
+    MyCard.find({},(function(err, results){
+        if(err){
+            console.log('Problem is', err)
+        } else {
+            console.log('results are', results)
+        }
+        res.send(200, {data: results})
     })
-    return foundCards;
-    
+    )
+
 })
+
+// app.get('/partials/pictures', function(req, res){
+//     var MyCard = mongoose.model('Card', cardSchema);
+//     MyCard.find({}).exec(function(err, foundCards){
+//         console.log('cards are', foundCards)
+//         // res.sendFile('/Users/ronic/dev-stuff/mean-stack-sample/server/views/partials/pictures',{foundCards: foundCards})
+//         // return foundCards;
+        
+//         // // var myCards = foundCards;
+//         // // console.log('cards in get method', myCards);
+//     })
+//     // return foundCards;
+    
+// })
 
 app.get('/partials/:partialPath', function(req, res){
     res.render('partials/' + req.params.partialPath)

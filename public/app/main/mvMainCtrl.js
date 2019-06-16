@@ -1,5 +1,4 @@
 
-// const server = require('../../server');
 angular.module('app').controller('mvMainCtrl', function($scope, $http, $q) {
     $scope.courses = [
       {name: 'C# for Sociopaths', featured: true, published: new Date('10/5/2013')},
@@ -18,9 +17,12 @@ angular.module('app').controller('mvMainCtrl', function($scope, $http, $q) {
       {name: 'How to Deal with Narcissistic Coworkers', featured: true, published: new Date('2/15/2013')},
       {name: 'Death March Coding for Fun and Profit', featured: true, published: new Date('7/1/2013')}
     ];
-    $http.get('/partials/pictures').then(function(response){
-      console.log('data passed to res', response)
+    $scope.cards;
+    $http.get('/cards').then(function(response){
+      console.log('got into response from get', response.data)
+      $scope.cards = response.data
     })
+    // console.log('controller')
   });
 
   

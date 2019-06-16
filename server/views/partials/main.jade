@@ -5,9 +5,13 @@
         p MagicKeeper - a simple database for Magic The Gathering cards
     
     .row
-        .col-md-6
+        .col-md-4
             div(ng-include="'/partials/pictures'")
             
-        .col-md-6
+        .col-md-4
             div(ng-include="'/partials/new-courses'")
-            p stuff to go here
+            p changed me
+        
+        .col-md-4
+            .row(ng-repeat="card in cards.data")
+                {{card.message}}
