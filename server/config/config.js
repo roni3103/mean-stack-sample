@@ -9,6 +9,6 @@ module.exports = {
     production: {
         rootPath: rootPath,
         db: 'mongodb://roni:multivision1@ds135427.mlab.com:35427/multivision',
-        port: process.env.PORT || 80
+        port: process.env.PORT || 8080
     }
 }

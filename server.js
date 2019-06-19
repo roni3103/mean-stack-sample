@@ -5,7 +5,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 
 
-var env = process.env.NODE_ENV || 'development';
+var env = process.env.NODE_ENV || 'production';
 
 // we need to match our environments with those available in our config
 // anything else will just error
@@ -20,7 +20,7 @@ var User = mongoose.model('User');
 passport.use(new LocalStrategy(
     function(username, password, done){
         User.findOne({username:username}).exec(function(err, user){
-            if(user){
+            if(user && user.authenticate(password)){
                 return done(null, user)
             } else {
                 return done(null, false)
